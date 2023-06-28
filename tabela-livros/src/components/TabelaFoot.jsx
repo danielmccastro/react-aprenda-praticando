@@ -1,9 +1,9 @@
 import React from "react";
 
-const TabelaFoot = () => (
+const TabelaFoot = (props) => (
     <tfoot>
         <tr>
-            <td colSpan="4">Este e o rodape da tabela</td>
+            <td colSpan="4">Quantidade de livros na tabela: {props.qdeLivros}</td>
         </tr>
     </tfoot>
 )
