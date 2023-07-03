@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 class CadastrarLivros extends Component {
   state = {
@@ -18,11 +18,11 @@ class CadastrarLivros extends Component {
   };
 
   render() {
-    if (this.state.redirecionar === "true") {
-      return redirect("/");
+    if (this.state.redirecionar === true) {
+      return <Navigate to="/"/>;
     }
     return (
-      <form>
+      <form onSubmit={this.handleLivroForm}>
         <h1>Cadastrar livro</h1>
         <p>
           <label htmlFor="fisbn">
@@ -86,7 +86,7 @@ class CadastrarLivros extends Component {
           />
         </p>
         <p>
-          <button className="botao cadastrar" type="submit">
+          <button className="botao cadastrar" type="submit" >
             Cadastrar
           </button>
         </p>

@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  redirect,
+  Navigate,
 } from "react-router-dom";
 
 import Menu from "./components/Menu";
@@ -65,17 +65,19 @@ class App extends Component {
           <Route
             exact
             path="/editar/:isbnLivro"
-            element={(props) => {
+            element={props => {
               const livro = this.state.livros.find(
-                (livro) => livro.isbn === props.match.params.isbnLivro
+                livro => livro.isbn === props.match.params.isbnLivro
               );
               if (livro) {
-                return <CadastrarLivros
-                  editarLivro={this.editarLivro}
-                  livro={livro}
-                />;
+                return (
+                  <CadastrarLivros
+                    editarLivro={this.editarLivro}
+                    livro={livro}
+                  />
+                );
               } else {
-                return redirect("/");
+                return <Navigate to="/" />;
               }
             }}
           />

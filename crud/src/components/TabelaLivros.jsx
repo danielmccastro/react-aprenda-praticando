@@ -24,7 +24,9 @@ const TabelaLivros = ({ livros }) => {
                 <td>{livro.titulo}</td>
                 <td>{livro.autor}</td>
                 <td>
-                  <button className="botao editar"><Link to={`/editar/${livro.isbn}`}>Editar</Link></button>
+                  <button className="botao editar">
+                    <Link to={`editar/${livro.isbn}`}>Editar</Link>
+                  </button>
                 </td>
                 <td>
                   <button className="botao remover">Remover</button>
