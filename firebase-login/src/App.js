@@ -54,7 +54,7 @@ class App extends Component {
     return (
       <Router>
         <SimpleStorage parent={this} />
-        <Header />
+        <Header isAuthenticated={this.state.isAuthenticated}/>
         <Switch>
           <Route
             exact
