@@ -10,10 +10,13 @@ import TabelaLivros from "./components/TabelaLivros";
 import CadastrarLivros from "./components/CadastrarLivros";
 import NotFound from "./components/NotFound";
 import SimpleStorage from "react-simple-storage";
+import Login from "./components/Login";
+import TabelaHome from "./components/TabelaHome";
 
 class App extends Component {
   state = {
     livros: [],
+    isAuthenticated: false,
   };
 
   inserirLivro = (livro) => {
@@ -41,6 +44,12 @@ class App extends Component {
     }
   };
 
+  componentDidMount() {
+    this.setState({
+      isAuthenticated: false,
+    });
+  }
+
   render() {
     return (
       <Router>
@@ -50,12 +59,16 @@ class App extends Component {
           <Route
             exact
             path="/"
-            render={() => (
-              <TabelaLivros
-                livros={this.state.livros}
-                removerLivro={this.removerLivro}
-              />
-            )}
+            render={() =>
+              this.state.isAuthenticated === false ? (
+                <TabelaHome livros={this.state.livros} />
+              ) : (
+                <TabelaLivros
+                  livros={this.state.livros}
+                  removerLivro={this.removerLivro}
+                />
+              )
+            }
           />
           <Route
             exact
@@ -67,6 +80,7 @@ class App extends Component {
               />
             )}
           />
+          <Route exact path="/login" render={() => <Login />} />
           <Route
             exact
             path="/editar/:isbnLivro"

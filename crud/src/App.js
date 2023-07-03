@@ -1,39 +1,20 @@
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
-  Routes,
+  Switch,
   Route,
-  Navigate
+  Redirect,
 } from "react-router-dom";
-
-
 import Menu from "./components/Menu";
 import TabelaLivros from "./components/TabelaLivros";
 import CadastrarLivros from "./components/CadastrarLivros";
 import NotFound from "./components/NotFound";
+import SimpleStorage from "react-simple-storage";
 
 class App extends Component {
-constructor(props) {
-  super(props)
-  this.state= {livros: [{
-    id: 1,
-    isbn: "978-85-7522-403-8",
-    titulo: "HTML5 - 2ª Edição",
-    autor: "Maurício Samy Silva",
-  },
-  {
-    id: 2,
-    isbn: "978-85-7522-807-4",
-    titulo: "Introdução ao Pentest",
-    autor: "Daniel Moreno",
-  },
-  {
-    id: 3,
-    isbn: "978-85-7522-780-8",
-    titulo: "Internet das Coisas para Desenvolvedores",
-    autor: "Ricardo da Silva Ogliari",
-  },]}
-}
+  state = {
+    livros: [],
+  };
 
   inserirLivro = (livro) => {
     livro.id = this.state.livros.length + 1;
@@ -42,50 +23,56 @@ constructor(props) {
     });
   };
 
-  editarLivro = livro => {
-    const index = this.state.livros.findIndex(p => p.id === livro.id);
+  editarLivro = (livro) => {
+    const index = this.state.livros.findIndex((p) => p.id === livro.id);
     const livros = this.state.livros
-    .slice(0, index)
-    .concat(this.state.livros.slice(index + 1));
+      .slice(0, index)
+      .concat(this.state.livros.slice(index + 1));
     const newLivros = [...livros, livro].sort((a, b) => a.id - b.id);
     this.setState({
-      livros: newLivros
-    })
-  }
+      livros: newLivros,
+    });
+  };
 
-  removerLivro = livro => {
+  removerLivro = (livro) => {
     if (window.confirm("Remover esse livro?")) {
-      const livros = this.state.livros.filter(p => p.isbn !== livro.isbn)
-      this.setState({livros});
+      const livros = this.state.livros.filter((p) => p.isbn !== livro.isbn);
+      this.setState({ livros });
     }
-  }
+  };
 
   render() {
     return (
       <Router>
+        <SimpleStorage parent={this} />
         <Menu />
-        <Routes>
+        <Switch>
           <Route
             exact
             path="/"
-            element={<TabelaLivros livros={this.state.livros} removerLivro={this.removerLivro} />}
+            render={() => (
+              <TabelaLivros
+                livros={this.state.livros}
+                removerLivro={this.removerLivro}
+              />
+            )}
           />
           <Route
             exact
-            path="cadastrar"
-            element={
+            path="/cadastrar"
+            render={() => (
               <CadastrarLivros
                 inserirLivro={this.inserirLivro}
                 livro={{ id: 0, isbn: "", titulo: "", autor: "" }}
               />
-            }
+            )}
           />
           <Route
             exact
-            path="editar/:isbnLivro"
-            element={props => {
+            path="/editar/:isbnLivro"
+            render={(props) => {
               const livro = this.state.livros.find(
-                livro => livro.isbn === props.match.params.isbnLivro
+                (livro) => livro.isbn === props.match.params.isbnLivro
               );
               if (livro) {
                 return (
@@ -95,12 +82,13 @@ constructor(props) {
                   />
                 );
               } else {
-                return <Navigate to="/" />;
+                return <Redirect to="/" />;
               }
             }}
           />
-          <Route exact path="*" element={<NotFound />} />
-        </Routes>
+
+          <Route component={NotFound} />
+        </Switch>
       </Router>
     );
   }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Navigate } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 class CadastrarLivros extends Component {
   state = {
@@ -13,13 +13,16 @@ class CadastrarLivros extends Component {
   };
   handleLivroForm = (e) => {
     e.preventDefault();
-    this.props.inserirLivro(this.state.livro);
+    if (this.props.editarLivro) {
+      this.props.editarLivro(this.state.livro);
+    } else {
+      this.props.inserirLivro(this.state.livro);
+    }
     this.setState({ redirecionar: true });
   };
-
   render() {
     if (this.state.redirecionar === true) {
-      return <Navigate to="/"/>;
+      return <Redirect to="/" />;
     }
     return (
       <form onSubmit={this.handleLivroForm}>
@@ -35,8 +38,8 @@ class CadastrarLivros extends Component {
             defaultValue={this.props.isbn}
             id="fisbn"
             required
-            value={this.state.livro.isbn}
             pattern="^978-85-7522-[0-9]{3}-[0-9]{1}$"
+            value={this.state.livro.isbn}
             onChange={(e) =>
               this.setState({
                 livro: {
@@ -47,15 +50,14 @@ class CadastrarLivros extends Component {
             }
           />
         </p>
-
         <p>
-          <label htmlFor="ftitulo">Titulo</label>
+          <label htmlFor="ftitulo">Título</label>
           <input
             type="text"
-            id="ftitulo"
-            ref="titulo"
-            required
             defaultValue={this.props.titulo}
+            ref="titulo"
+            id="ftitulo"
+            required
             value={this.state.livro.titulo}
             onChange={(e) =>
               this.setState({
@@ -71,9 +73,10 @@ class CadastrarLivros extends Component {
           <label htmlFor="fautor">Autor</label>
           <input
             type="text"
+            defaultValue={this.props.autor}
+            ref="autor"
             id="fautor"
             required
-            defaultValue={this.props.autor}
             value={this.state.livro.autor}
             onChange={(e) =>
               this.setState({
@@ -86,7 +89,7 @@ class CadastrarLivros extends Component {
           />
         </p>
         <p>
-          <button className="botao cadastrar" type="submit" >
+          <button type="submit" className="botao cadastrar">
             Cadastrar
           </button>
         </p>
