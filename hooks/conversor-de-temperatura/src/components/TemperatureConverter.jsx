@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const TemperatureConverter = () => {
   let [temperature, setTemperature] = useState("");
+
   const handleTemperature = (valorTecla) => {
     if (valorTecla === "." && temperature.includes(".")) {
       return false;
@@ -18,6 +19,45 @@ const TemperatureConverter = () => {
       setTemperature(temperature + valorTecla);
     }
   };
+
+  const handleBackSpace = () => {
+    temperature = temperature.slice(0, -1);
+    setTemperature(temperature);
+  };
+
+  const handleConverter = () => {
+    temperature = Number(temperature);
+    const fromTemp =
+      document.querySelector("#user-choice").options[
+        document.querySelector("#user-choice").selectedIndex
+      ].value;
+    console.log(fromTemp);
+    if (fromTemp === "C") {
+      const celsiusTemperature = temperature.toFixed(2);
+      const fahrenheitTemperature = ((temperature * 9) / 5 + 32).toFixed(2);
+      const kelvinTemperature = (temperature + 273.15).toFixed(2);
+      console.log(celsiusTemperature);
+      console.log(fahrenheitTemperature);
+      console.log(kelvinTemperature);
+    }
+    if (fromTemp === "F") {
+      const fahrenheitTemperature = temperature.toFixed(2);
+      const celsiusTemperature = ((temperature - 32) * 5 / 9).toFixed(2);
+      const kelvinTemperature = ((temperature - 32) * 5 / 9 + 273.15).toFixed(2);
+      console.log(celsiusTemperature);
+      console.log(fahrenheitTemperature);
+      console.log(kelvinTemperature);
+    }
+    if (fromTemp === "K") {
+      const kelvinTemperature = temperature.toFixed(2);
+      const celsiusTemperature = (temperature - 273.15).toFixed(2);
+      const fahrenheitTemperature = ((temperature - 273.15) * 9 / 5 + 32).toFixed(2);
+      console.log(celsiusTemperature);
+      console.log(fahrenheitTemperature);
+      console.log(kelvinTemperature);
+    }
+  };
+
   return (
     <>
       <aside className="areaResultado">
@@ -45,7 +85,11 @@ const TemperatureConverter = () => {
         <span>
           <sup>o</sup>K
         </span>
-        <button className="tecla" id="converter">
+        <button
+          className="tecla"
+          id="converter"
+          onClick={() => handleConverter()}
+        >
           Converter
         </button>
       </aside>
@@ -86,7 +130,10 @@ const TemperatureConverter = () => {
         >
           .
         </button>
-        <button className="limpa tecla"></button>
+        <button
+          className="limpa tecla"
+          onClick={() => handleBackSpace()}
+        ></button>
         <button
           className="negativo tecla"
           onClick={() => handleTemperature("-")}
