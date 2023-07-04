@@ -12,7 +12,7 @@ export default class Login extends Component {
   };
   render() {
     return (
-      <from className="container" name="login" onSubmit={this.handleLogin}>
+      <form className="container" name="login" onSubmit={this.handleLogin}>
         <p>
           <label htmlFor="email">Email:</label>
           <input
@@ -35,7 +35,7 @@ export default class Login extends Component {
             Login
           </button>
         </p>
-      </from>
+      </form>
     );
   }
 }
