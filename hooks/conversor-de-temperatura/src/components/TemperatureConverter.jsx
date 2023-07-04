@@ -3,7 +3,20 @@ import React, { useState } from "react";
 const TemperatureConverter = () => {
   let [temperature, setTemperature] = useState("");
   const handleTemperature = (valorTecla) => {
-    setTemperature(temperature + valorTecla);
+    if (valorTecla === "." && temperature.includes(".")) {
+      return false;
+    }
+    if (valorTecla === "-" && temperature === "") {
+      setTemperature(valorTecla);
+      return true;
+    }
+    if (valorTecla === "." && (temperature === "" || temperature === "-")) {
+      setTemperature(temperature + "0.");
+      return true;
+    }
+    if (valorTecla !== "-") {
+      setTemperature(temperature + valorTecla);
+    }
   };
   return (
     <>
@@ -69,9 +82,9 @@ const TemperatureConverter = () => {
         </button>
         <button
           className="virgula tecla"
-          onClick={() => handleTemperature(",")}
+          onClick={() => handleTemperature(".")}
         >
-          ,
+          .
         </button>
         <button className="limpa tecla"></button>
         <button
