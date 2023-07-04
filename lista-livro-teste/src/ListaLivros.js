@@ -31,6 +31,7 @@ function ListaLivros() {
       <form onSubmit={handleSubmit}>
         <label htmlFor="titulo">Insira um livro:</label>
         <input
+          data-testid="titulo"
           id="titulo"
           type="text"
           value={newLivro}
@@ -42,7 +43,7 @@ function ListaLivros() {
         </button>
       </form>
       {livros.map((livro) => (
-        <div key={livro} className="container" id={livro}>
+        <div data-testid={livro.replace(/\s/g, "")} key={livro.replace(/\s/g, "")} className="container" id={livro.replace(/\s/g, "")}>
           {livro}
 
           {livro ? (
